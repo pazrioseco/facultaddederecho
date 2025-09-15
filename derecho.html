@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard de Cobertura - Derecho</title>
+    <!-- Carga de Tailwind CSS para estilos -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Carga de fuentes de Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background-color: #f3f4f6;
+            color: #374151;
+        }
+        h1, h2, h3 {
+            font-weight: 700;
+        }
+        .container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 1.5rem;
+        }
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            padding: 1.5rem;
+        }
+        .percent-cell {
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            font-weight: 500;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            min-height: 80px;
+        }
+        /* Clases de utilidad para los porcentajes */
+        .percent-high { background-color: #059669; }
+        .percent-medium-high { background-color: #10B981; }
+        .percent-medium { background-color: #F59E0B; }
+        .percent-low { background-color: #EF4444; }
+        
+        .logo-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 1rem;
+            z-index: 1000;
+        }
+        .logo-container img {
+            max-height: 60px;
+            width: auto;
+            border-radius: 0.5rem;
+        }
+        .progress-bar-bg {
+            background-color: #e5e7eb;
+            border-radius: 0.5rem;
+            height: 1.5rem;
+            overflow: hidden;
+        }
+        .progress-bar-fill {
+            height: 100%;
+            border-radius: 0.5rem;
+            transition: width 0.5s ease-in-out;
+            text-align: center;
+            color: white;
+            font-weight: bold;
+            line-height: 1.5rem;
+        }
+        details > summary {
+            cursor: pointer;
+            list-style: none;
+        }
+        details > summary::-webkit-details-marker { display: none; }
+        details > summary::before {
+            content: '►';
+            margin-right: 0.5rem;
+            display: inline-block;
+            transition: transform 0.2s;
+        }
+        details[open] > summary::before { transform: rotate(90deg); }
+        
+        .library-table th, .library-table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            vertical-align: middle;
+        }
+        .library-table th {
+            background-color: #f9fafb;
+            font-weight: 600;
+        }
+         .library-table td {
+            text-align: center;
+         }
+         .library-table td:first-child {
+            text-align: left;
+            font-weight: bold;
+         }
+    </style>
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <div class="logo-container">
+        <img src="https://raw.githubusercontent.com/pazrioseco/DashboardCRAI/main/LOGO%20CRAI.png" alt="Logo" onerror="this.onerror=null; this.src='https://placehold.co/150x60/cccccc/ffffff?text=Logo';" class="rounded-md">
+    </div>
+
+    <div class="container pt-24">
+        <h1 class="text-4xl font-bold text-center text-gray-800 mb-2">Cobertura Bibliográfica</h1>
+        <h2 class="text-2xl text-center text-gray-600 mb-10">Carrera de Derecho</h2>
+
+        <div class="card mb-8">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Indicadores de Cobertura</h3>
+             <div class="flex flex-wrap justify-center items-center gap-x-6 gap-y-2 mb-4 text-sm text-gray-600 border-t border-b py-3 bg-gray-50 rounded-md">
+                <span class="font-semibold mr-4">Leyenda:</span>
+                <div class="flex items-center"><span class="w-4 h-4 rounded mr-2 percent-high"></span><span>90% o más</span></div>
+                <div class="flex items-center"><span class="w-4 h-4 rounded mr-2 percent-medium-high"></span><span>80% - 89%</span></div>
+                <div class="flex items-center"><span class="w-4 h-4 rounded mr-2 percent-medium"></span><span>70% - 79%</span></div>
+                <div class="flex items-center"><span class="w-4 h-4 rounded mr-2 percent-low"></span><span>Menos de 70%</span></div>
+            </div>
+            <div id="kpi-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+                <!-- KPIs se insertarán aquí -->
+            </div>
+        </div>
+        
+        <div class="card mb-8">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Detalle: Títulos Requeridos vs. Existentes</h3>
+            <div id="comparison-cards-container" class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Tarjetas de comparación se insertarán aquí -->
+            </div>
+        </div>
+        
+        <div class="card mb-8">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Cobertura por Biblioteca</h3>
+            <div id="library-coverage-table-container" class="mt-4">
+                 <!-- Tabla de bibliotecas se insertará aquí -->
+            </div>
+        </div>
+
+        <div class="card mb-8">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Títulos y Ejemplares por Biblioteca</h3>
+            <div id="library-holdings-table-container" class="mt-4">
+                 <!-- Tabla de existencias se insertará aquí -->
+            </div>
+        </div>
+        
+        <div class="card mb-8">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Detalle de Ejemplares por Título</h3>
+            <div id="title-detail-table-container" class="mt-4">
+                 <!-- Tabla de detalle por título se insertará aquí -->
+            </div>
+        </div>
+
+        <div class="card">
+            <h3 class="text-2xl font-semibold text-gray-800 mb-4 text-center">Detalle de Bibliografía y Formato Electrónico</h3>
+            <div id="bibliography-detail-table-container" class="mt-4">
+                 <!-- Tabla de detalle de bibliografía se insertará aquí -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- DATOS ESPECÍFICOS PARA LA CARRERA DE DERECHO ---
+        const careerData = { 
+            faculty: "Fac. Derecho", career: "DERECHO", bbas_unique_percent: 97, bcom_unique_percent: 98, bbas_ebooks_percent: 61, bcom_ebooks_percent: 43, required_basic: 113, required_bcom: 126, existing_basic: 110, existing_bcom: 123, 
+            missing_basic_titles: ["Título Básico Faltante 1", "Título Básico Faltante 2", "Título Básico Faltante 3"], 
+            missing_bcom_titles: ["Título BCOM Faltante 1", "Título BCOM Faltante 2", "Título BCOM Faltante 3"] 
+        };
+        
+        const libraryData = { 
+            career: "DERECHO", 
+            libraries: [
+                { name: "Biblioteca de Derecho", existing_basic: 70, existing_bcom: 85, total_titles: 98, total_copies: 350 },
+                { name: "Biblioteca Central", existing_basic: 30, existing_bcom: 28, total_titles: 60, total_copies: 120 },
+                { name: "Biblioteca Digital", existing_basic: 10, existing_bcom: 10, total_titles: 55, total_copies: Infinity },
+            ]
+        };
+
+        const titleHoldingsData = {
+            libraryNames: ["Biblioteca de Derecho", "Biblioteca Central", "Biblioteca Digital"],
+            titles: [
+                { name: "Manual de Derecho Civil Parte General", holdings: { "Biblioteca de Derecho": 5, "Biblioteca Central": 2, "Biblioteca Digital": 0 } },
+                { name: "Constitución Política de la República", holdings: { "Biblioteca de Derecho": 10, "Biblioteca Central": 8, "Biblioteca Digital": Infinity } },
+                { name: "Teoría General del Acto Jurídico", holdings: { "Biblioteca de Derecho": 8, "Biblioteca Central": 3, "Biblioteca Digital": 0 } },
+                { name: "Derecho Penal Parte General", holdings: { "Biblioteca de Derecho": 12, "Biblioteca Central": 5, "Biblioteca Digital": 1 } },
+                { name: "El Contrato de Compraventa", holdings: { "Biblioteca de Derecho": 6, "Biblioteca Central": 1, "Biblioteca Digital": 0 } },
+            ]
+        };
+
+        const bibliographyDetailData = {
+            titles: [
+                { name: "Manual de Derecho Civil Parte General", type: "Básica", isElectronic: true, platform: "ProView" },
+                { name: "Constitución Política de la República", type: "Básica", isElectronic: true, platform: "Tirant Lo Blanch" },
+                { name: "Teoría General del Acto Jurídico", type: "Básica", isElectronic: false, platform: "N/A" },
+                { name: "Derecho Penal Parte General", type: "BCOM", isElectronic: true, platform: "VLex" },
+                { name: "El Contrato de Compraventa", type: "BCOM", isElectronic: false, platform: "N/A" },
+                { name: "Tratado de los Contratos", type: "BCOM", isElectronic: true, platform: "El Rayo" },
+                { name: "Responsabilidad Extracontractual", type: "Básica", isElectronic: true, platform: "ProView" },
+            ]
+        };
+
+        // --- LÓGICA DE RENDERIZADO DEL DASHBOARD ---
+
+        function getHeatmapColorClass(percentage) {
+            if (typeof percentage !== 'number' || isNaN(percentage)) return 'bg-gray-400';
+            if (percentage >= 90) return 'percent-high';
+            if (percentage >= 80) return 'percent-medium-high';
+            if (percentage >= 70) return 'percent-medium';
+            return 'percent-low';
+        }
+
+        function renderKPIs() {
+            const container = document.getElementById('kpi-container');
+            const formatPercent = (p) => (typeof p === 'number' ? `${p}%` : 'N/A');
+            container.innerHTML = `<div class="percent-cell ${getHeatmapColorClass(careerData.bbas_unique_percent)}"><p class="text-xs">BBAS T. Únicos</p><p class="text-lg font-bold">${formatPercent(careerData.bbas_unique_percent)}</p></div><div class="percent-cell ${getHeatmapColorClass(careerData.bcom_unique_percent)}"><p class="text-xs">BCOM T. Únicos</p><p class="text-lg font-bold">${formatPercent(careerData.bcom_unique_percent)}</p></div><div class="percent-cell ${getHeatmapColorClass(careerData.bbas_ebooks_percent)}"><p class="text-xs">BBAS Ebooks</p><p class="text-lg font-bold">${formatPercent(careerData.bbas_ebooks_percent)}</p></div><div class="percent-cell ${getHeatmapColorClass(careerData.bcom_ebooks_percent)}"><p class="text-xs">BCOM Ebooks</p><p class="text-lg font-bold">${formatPercent(careerData.bcom_ebooks_percent)}</p></div>`;
+        }
+        
+        function renderComparisonCards() {
+            const container = document.getElementById('comparison-cards-container');
+            const createComparisonCard = (title, existing, required, missingTitles) => {
+                const coverage = (required > 0) ? (existing / required) * 100 : 0;
+                let missingTitlesHtml = '';
+                if (missingTitles && missingTitles.length > 0) {
+                    const listItems = missingTitles.map(t => `<li class="py-1">${t}</li>`).join('');
+                    missingTitlesHtml = `<details class="mt-4"><summary class="text-sm font-semibold text-blue-600 hover:underline">Ver Títulos Faltantes (${missingTitles.length})</summary><ul class="list-disc list-inside mt-2 pl-2 text-sm text-gray-600 bg-gray-100 p-2 rounded max-h-40 overflow-y-auto">${listItems}</ul></details>`;
+                }
+                return `<div class="p-4 border rounded-lg bg-gray-50 flex flex-col"><div><h3 class="font-bold text-lg text-gray-700">${title}</h3><p class="text-gray-600 mt-2">Existentes: <span class="font-bold">${existing}</span> de <span class="font-bold">${required}</span> Requeridos</p><div class="flex items-center mt-3"><div class="w-full progress-bar-bg"><div class="progress-bar-fill ${getHeatmapColorClass(coverage)}" style="width: ${coverage.toFixed(1)}%;">${coverage.toFixed(0)}%</div></div></div></div><div class="mt-auto">${missingTitlesHtml}</div></div>`;
+            };
+            container.innerHTML = createComparisonCard('Bibliografía Básica', careerData.existing_basic, careerData.required_basic, careerData.missing_basic_titles) + createComparisonCard('Bibliografía Complementaria (BCOM)', careerData.existing_bcom, careerData.required_bcom, careerData.missing_bcom_titles);
+        }
+        
+        function renderLibraryCoverageTable() {
+            const container = document.getElementById('library-coverage-table-container');
+            let tableHTML = `<div class="overflow-x-auto"><table class="min-w-full library-table"><thead><tr><th rowspan="2" class="align-middle">Biblioteca</th><th colspan="2" class="text-center border-b border-l">Bibliografía Básica</th><th colspan="2" class="text-center border-b border-l">Bibliografía Complementaria</th></tr><tr><th class="text-center font-normal text-gray-600 border-l">Títulos (Exist / Req)</th><th class="text-center font-normal text-gray-600">% Cobertura</th><th class="text-center font-normal text-gray-600 border-l">Títulos (Exist / Req)</th><th class="text-center font-normal text-gray-600">% Cobertura</th></tr></thead><tbody>`;
+            libraryData.libraries.forEach(lib => {
+                const basic_coverage = (careerData.required_basic > 0) ? (lib.existing_basic / careerData.required_basic) * 100 : 0;
+                const bcom_coverage = (careerData.required_bcom > 0) ? (lib.existing_bcom / careerData.required_bcom) * 100 : 0;
+                tableHTML += `<tr><td>${lib.name}</td><td class="border-l">${lib.existing_basic} / ${careerData.required_basic}</td><td><div class="progress-bar-bg mx-auto max-w-[100px]"><div class="progress-bar-fill ${getHeatmapColorClass(basic_coverage)}" style="width: ${basic_coverage.toFixed(1)}%;">${basic_coverage.toFixed(0)}%</div></div></td><td class="border-l">${lib.existing_bcom} / ${careerData.required_bcom}</td><td><div class="progress-bar-bg mx-auto max-w-[100px]"><div class="progress-bar-fill ${getHeatmapColorClass(bcom_coverage)}" style="width: ${bcom_coverage.toFixed(1)}%;">${bcom_coverage.toFixed(0)}%</div></div></td></tr>`;
+            });
+            tableHTML += `</tbody></table></div>`;
+            container.innerHTML = tableHTML;
+        }
+
+        function renderLibraryHoldingsTable() {
+            const container = document.getElementById('library-holdings-table-container');
+            let tableHTML = `<div class="overflow-x-auto"><table class="min-w-full library-table"><thead><tr><th>Biblioteca</th><th>Títulos Únicos Existentes</th><th>Cantidad de Ejemplares</th></tr></thead><tbody>`;
+            libraryData.libraries.forEach(lib => {
+                tableHTML += `<tr><td>${lib.name}</td><td>${lib.total_titles}</td><td>${lib.total_copies === Infinity ? 'Ilimitados (Digital)' : lib.total_copies}</td></tr>`;
+            });
+            tableHTML += `</tbody></table></div>`;
+            container.innerHTML = tableHTML;
+        }
+
+        function renderTitleDetailTable() {
+            const container = document.getElementById('title-detail-table-container');
+            const { libraryNames, titles } = titleHoldingsData;
+            let headerHTML = libraryNames.map(name => `<th>${name}</th>`).join('');
+            let bodyHTML = titles.map(title => {
+                let rowHTML = `<tr><td>${title.name}</td>`;
+                libraryNames.forEach(libName => {
+                    const copies = title.holdings[libName] || 0;
+                    rowHTML += `<td>${copies === Infinity ? 'Digital' : copies}</td>`;
+                });
+                rowHTML += `</tr>`;
+                return rowHTML;
+            }).join('');
+            container.innerHTML = `<div class="overflow-x-auto"><table class="min-w-full library-table"><thead><tr><th>Título</th>${headerHTML}</tr></thead><tbody>${bodyHTML}</tbody></table></div>`;
+        }
+
+        function renderBibliographyDetailTable() {
+            const container = document.getElementById('bibliography-detail-table-container');
+            const { titles } = bibliographyDetailData;
+            let tableHTML = `<div class="overflow-x-auto"><table class="min-w-full library-table"><thead><tr><th>Título</th><th>Tipo</th><th>F. Electrónico</th><th>Plataforma</th></tr></thead><tbody>`;
+            titles.forEach(title => {
+                const electronicStatus = title.isElectronic 
+                    ? `<span class="text-green-600 font-bold">✓ Sí</span>` 
+                    : `<span class="text-red-500 font-bold">✗ No</span>`;
+                tableHTML += `<tr><td>${title.name}</td><td><span class="px-2 py-1 text-xs font-semibold rounded-full ${title.type === 'Básica' ? 'bg-blue-100 text-blue-800' : 'bg-purple-100 text-purple-800'}">${title.type}</span></td><td>${electronicStatus}</td><td>${title.platform}</td></tr>`;
+            });
+            tableHTML += `</tbody></table></div>`;
+            container.innerHTML = tableHTML;
+        }
+
+
+        // --- Inicialización ---
+        window.onload = () => {
+            renderKPIs();
+            renderComparisonCards();
+            renderLibraryCoverageTable();
+            renderLibraryHoldingsTable();
+            renderTitleDetailTable();
+            renderBibliographyDetailTable();
+        };
+
+    </script>
+</body>
+</html>
+
